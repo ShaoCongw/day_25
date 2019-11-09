@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>clokc</title>
+</head>
+<body>
+	<select id="year-select">
+    
+</select>
+
+<select id="month-select">
+
+</select>
+
+<select id="day-select">
+</select>
+
+<select id="hour-select">
+
+</select>
+
+<select id="minite-select">
+   
+</select>
+
+<select id="second-select">
+    
+</select>
+
+<p id="result-wrapper">现在距离 2001年1月1日星期X HH:MM:SS 还有 X 天 X 小时 X 分 X 秒</p>
+<script type="text/javascript">
+    const yearSelect = document.getElementById("year-select");
+    const monthSelect = document.getElementById("month-select");
+    const daySelect = document.getElementById("day-select");
+    const hourSelect = document.getElementById("hour-select");
+    const minuteSelect = document.getElementById("minite-select");
+    const secondSelect = document.getElementById("second-select");
+    const p = document.getElementById("result-wrapper")
+    //添加完整的年份
+    function addYear() {
+        for (var i =  2000; i <= 2032; i++) {
+            var option = document.createElement("option");
+            option.value = i;
+            option.innerHTML = i;
+            yearSelect.appendChild(option);
+        }
+    }
+    function addMonth(){
+        for (var i =  1; i <= 12; i++) {
+            var option = document.createElement("option");
+            option.value = i;
+            option.innerHTML = i;
+            monthSelect.appendChild(option);
+        }
+    }
+    function addDay(){
+        for (var i =  1; i <= 31; i++) {
+            var option = document.createElement("option");
+            option.value = i;
+            option.innerHTML = i;
+            daySelect.appendChild(option);
+        }
+    }
+    function addHour(){
+        for (var i =  0; i < 24; i++) {
+            var option = document.createElement("option");
+            option.value = i;
+            if(i < 10){
+                option.innerHTML = "0" + i;
+            }else{
+                option.innerHTML = i;
+            }
+            hourSelect.appendChild(option);
+        }
+    }
+     function addMinute(){
+        for (var i =  0; i < 60; i++) {
+            var option = document.createElement("option");
+            option.value = i;
+            if(i < 10){
+                option.innerHTML = "0" + i;
+            }else{
+                option.innerHTML = i;
+            }
+            minuteSelect.appendChild(option);
+        }
+    }
+    function addSecond(){
+        for (var i =  0; i < 60; i++) {
+            var option = document.createElement("option");
+            option.value = i;
+            if(i < 10){
+                option.innerHTML = "0" + i;
+            }else{
+                option.innerHTML = i;
+            }
+            secondSelect.appendChild(option);
+        }
+    }
+    function getWeekday(date){
+            var result = "";
+            switch(date.getDay()){
+                case 0: 
+                    result = "星期日";
+                    break;
+                case 1:
+                    result = "星期一";
+                    break;
+                case 2:
+                    result = "星期二";
+                    break;
+                case 3:
+                    result = "星期三";
+                    break;
+                case 4:
+                    result = "星期四";
+                    break;
+                case 5:
+                    result = "星期五";
+                    break;
+                case 6:
+                    result = "星期六";
+
+            }
+            return result;
+        }
+        //小于10的数字补零
+        function addZero(num){
+            if(num < 10){
+                num = "0" + num;
+            }
+            return num;
+        }
+        //拼接完整日期
+        function getFullDate(year,month,day,weekday,hh,mm,ss){
+            
+            return year + "年" + month + "月" + day + "日" + weekday + " " +hh + ":" + mm + ":" + ss;
+            
+        }
+    function getDiff(date){
+        var selectDate =new Date(date);
+        var nowDate = new Date();
+        var diff = Math.abs(selectDate.getTime() - nowDate.getTime());
+        var dayDiff = Math.floor(diff / (24*60*60*1000));
+        var hourDiff = Math.floor(diff % (24*3600*1000) / 3600000);
+        var minuteDiff = Math.floor(diff % (24*3600*1000) % 3600000 /60000);
+        var secondDiff = Math.floor(diff % (24*3600*1000) % 3600000 % 60000 /1000);
+        console.log(dayDiff);
+        console.log(hourDiff);
+        console.log(minuteDiff);
+        console.log(secondDiff);
+        p.innerHTML = "现在距离" + getFullDate(selectDate.getFullYear(),addZero(selectDate.getMonth()),addZero(selectDate.getDate()),getWeekday(selectDate),addZero(selectDate.getHours()),addZero(selectDate.getMinutes()),addZero(selectDate.getSeconds()));
+        p.innerHTML += selectDate > nowDate?"还有":"已经过去";
+        p.innerHTML += dayDiff + "天" + hourDiff + "小时" + minuteDiff + "分" + secondDiff +"秒";
+    }
+
+    addYear();
+    addMonth();
+    addDay();
+    addHour();
+    addMinute();
+    addSecond();
+    
+    monthSelect.onchange = function(){
+        var selectIndex = this.selectedIndex + 1;
+        var options = daySelect.querySelectorAll("option");
+        var monthArray = [2,4,6,9,11];
+        if (monthArray.indexOf(selectIndex) != -1) {
+            if(options.length == 31){
+                daySelect.removeChild(options[30]);
+            }
+        }else {
+             if(options.length == 30){
+                var newOption = document.createElement("option");
+                newOption.value = 31;
+                newOption.innerHTML = 31;
+                daySelect.appendChild(newOption);
+            }
+        }
+    }
+    //所有select事件委托给body处理
+    document.body.onchange = function() {
+        var date = yearSelect.value +"-" + monthSelect.value + "-" + daySelect.value +"  " + hourSelect.value + ":" + minuteSelect.value + ":" + secondSelect.value;
+        getDiff(date);
+    }
+
+
+   
+</script>
+</body>
+</html>

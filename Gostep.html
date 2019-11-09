@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		时钟
+	</title>
+</head>
+<body>
+
+	<script type="text/javascript">
+		//返回星期几
+		function getWeekday(date,mode){
+			var result = "";
+			switch(date.getDay()){
+				case 0: 
+					result = mode == 0?"Sunday":"星期日";
+					break;
+				case 1:
+					result = mode == 0?"Monday":"星期一";
+					break;
+				case 2:
+					result = mode == 0?"Tuesday":"星期二";
+					break;
+				case 3:
+					result = mode == 0?"Wednesday":"星期三";
+					break;
+				case 4:
+					result = mode == 0?"Thursday":"星期四";
+					break;
+				case 5:
+					result = mode == 0?"Friday":"星期五";
+					break;
+				case 6:
+					result = mode == 0?"Saturday":"星期六";
+
+			}
+			return result;
+		}
+
+		//小于10的数字补零
+		function addZero(num){
+			if(num < 10){
+				num = "0" + num;
+			}
+			return num;
+		}
+
+		//拼接完整日期
+		function getFullDate(year,month,day,weekday,hh,mm,ss,mode){
+			if(mode == 0){
+				return year + "-" + month + "-" + day + "-" + weekday + " " +hh + ":" + mm + ":" + ss;
+			}
+			return year + "年" + month + "月" + day + "日" + weekday + " " +hh + ":" + mm + ":" + ss;
+			
+		}
+		function test(mode){
+			var date = new Date();
+			console.log(getFullDate(date.getFullYear(),addZero(date.getMonth()),addZero(date.getDate())
+				,getWeekday(date,mode),addZero(date.getHours()),addZero(date.getMinutes()),addZero(date.getSeconds()),mode));
+		}	
+	</script>
+</body>
+</html>
